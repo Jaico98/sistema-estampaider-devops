@@ -2,6 +2,9 @@ package com.estampaider.productos.controller;
 
 import com.estampaider.productos.model.Producto;
 import com.estampaider.productos.service.ProductoService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -16,8 +19,8 @@ public class ProductoController {
     private ProductoService productoService;
 
     @GetMapping
-    public Flux<Producto> listarProductos() {
-        return productoService.listarProductos();
+    public List<String> listar() {
+        return List.of("Camiseta", "Mug", "Gorra");
     }
 
     @GetMapping("/{id}")

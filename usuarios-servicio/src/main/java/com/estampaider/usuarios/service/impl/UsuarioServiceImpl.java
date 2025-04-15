@@ -1,17 +1,18 @@
-package com.estampaider.usuarios.service;
+package com.estampaider.usuarios.service.impl;
 
 import com.estampaider.usuarios.model.Usuario;
 import com.estampaider.usuarios.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.estampaider.usuarios.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public Flux<Usuario> listarUsuarios() {

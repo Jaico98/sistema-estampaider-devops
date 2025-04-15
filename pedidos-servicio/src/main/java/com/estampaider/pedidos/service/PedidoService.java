@@ -1,6 +1,7 @@
 package com.estampaider.pedidos.service;
 
-import com.estampaider.pedidos.model.Pedido;
+import com.estampaider.pedidos.modelo.Pedido;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
