@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: estampaider-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  config-server:
+    build:
+      context: ./config-server
+    container_name: config-server
+    ports:
+      - "8089:8089"
+    depends_on:
+      - mongo
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  usuarios-servicio:
+    build:
+      context: ./usuarios-servicio
+    container_name: usuarios-servicio
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+
+  productos-servicio:
+    build:
+      context: ./productos-servicio
+    container_name: productos-servicio
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+
+  pedidos-servicio:
+    build:
+      context: ./pedidos-servicio
+    container_name: pedidos-servicio
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+
+volumes:
+  mongo-data:

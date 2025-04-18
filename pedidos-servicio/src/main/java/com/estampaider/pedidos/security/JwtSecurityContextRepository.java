@@ -5,11 +5,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 
+@Component
 public class JwtSecurityContextRepository implements ServerSecurityContextRepository {
 
     private final JwtUtil jwtUtil;
@@ -29,9 +31,9 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            if (jwtUtil.validateToken(token)) {
-                var auth = new UsernamePasswordAuthenticationToken(
-                        jwtUtil.getUsernameFromToken(token), null, Collections.emptyList());
+            if (jwtUtil.validate(token)) {
+                String username = jwtUtil.getUsername(token);
+                var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
                 return Mono.just(new SecurityContextImpl(auth));
             }
         }

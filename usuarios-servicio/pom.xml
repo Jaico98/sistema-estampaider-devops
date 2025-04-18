@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.6</version>
+    <version>3.3.10</version>
     <relativePath/>
   </parent>
 
@@ -42,6 +42,11 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
     </dependency>
 
     <!-- Eureka client -->
@@ -80,6 +85,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+</dependency>
+
+
 <!-- Seguridad (Spring Boot se encarga de las versiones internas) -->
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -91,15 +102,6 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-webflux</artifactId>
 </dependency>
-
-<dependency>
-    <groupId>jakarta.servlet</groupId>
-    <artifactId>jakarta.servlet-api</artifactId>
-    <version>5.0.0</version>
-    <scope>provided</scope>
-</dependency>
-
-
 
 <!-- JWT -->
 <dependency>
@@ -148,6 +150,5 @@
       </plugin>
     </plugins>
   </build>
-
 
 </project>

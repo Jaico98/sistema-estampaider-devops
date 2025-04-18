@@ -2,15 +2,17 @@ package com.estampaider.usuarios.security;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 
+@Component
 public class JwtSecurityContextRepository implements ServerSecurityContextRepository {
 
     private final JwtUtil jwtUtil;
@@ -21,8 +23,7 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
 
     @Override
     public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
-        // No persistimos nada en la sesión
-        return Mono.empty();
+        return Mono.empty(); // No se guarda el contexto
     }
 
     @Override
@@ -33,8 +34,14 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
             String token = authHeader.substring(7);
             if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.getUsernameFromToken(token);
-                var auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
-                return Mono.just(new SecurityContextImpl(auth));
+
+                var authentication = new UsernamePasswordAuthenticationToken(
+                        username,
+                        null,
+                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")) // ajusta si usas roles reales del token
+                );
+
+                return Mono.just(new SecurityContextImpl(authentication));
             }
         }
 

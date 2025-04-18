@@ -1,0 +1,52 @@
+name: CI - Estampaider Microservicios
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    - name: Configurar Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Construir usuarios-servicio
+      working-directory: usuarios-servicio
+      run: mvn clean install -DskipTests
+
+    - name: Construir productos-servicio
+      working-directory: productos-servicio
+      run: mvn clean install -DskipTests
+
+    - name: Construir pedidos-servicio
+      working-directory: pedidos-servicio
+      run: mvn clean install -DskipTests
+
+    - name: Construir config-server
+      working-directory: config-server
+      run: mvn clean install -DskipTests
+
+    - name: Construir eureka-server
+      working-directory: eureka-server
+      run: mvn clean install -DskipTests
+
+    - name: Construir gateway-servicio
+      working-directory: gateway-servicio
+      run: mvn clean install -DskipTests

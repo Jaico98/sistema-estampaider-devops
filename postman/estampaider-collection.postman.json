@@ -1,0 +1,104 @@
+{
+    "info": {
+      "name": "Estampaider - Microservicios",
+      "description": "Colección de pruebas de autenticación, productos y pedidos para el sistema Estampaider.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth - Login",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"1234\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:8081/auth/login",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "8081",
+            "path": ["auth", "login"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Auth - Register",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"nombre\": \"admin\",\n    \"correo\": \"admin@email.com\",\n    \"contrasena\": \"1234\",\n    \"rol\": \"ADMIN\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:8081/auth/register",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "8081",
+            "path": ["auth", "register"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Productos - Listar",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{jwt_token}}"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8082/api/productos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "8082",
+            "path": ["api", "productos"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Pedidos - Listar",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "Authorization",
+              "value": "Bearer {{jwt_token}}"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8083/api/pedidos",
+            "protocol": "http",
+            "host": ["localhost"],
+            "port": "8083",
+            "path": ["api", "pedidos"]
+          }
+        },
+        "response": []
+      }
+    ],
+    "variable": [
+      {
+        "key": "jwt_token",
+        "value": ""
+      }
+    ]
+  }
+  
