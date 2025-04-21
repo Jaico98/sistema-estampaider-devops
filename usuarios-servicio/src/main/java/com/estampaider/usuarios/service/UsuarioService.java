@@ -6,10 +6,9 @@ import reactor.core.publisher.Mono;
 
 public interface UsuarioService {
     Flux<Usuario> listarUsuarios();
-
     Mono<Usuario> obtenerUsuarioPorId(String id);
-
     Mono<Usuario> crearUsuario(Usuario usuario);
-
     Mono<Void> eliminarUsuario(String id);
+
+    Mono<Usuario> registrar(Usuario usuario); 
 }

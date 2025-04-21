@@ -1,4 +1,4 @@
-name: CI - Estampaider Microservicios
+name: Java CI with Maven
 
 on:
   push:
@@ -11,42 +11,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:6.0
-        ports:
-          - 27017:27017
-
     steps:
-    - name: Checkout código
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Configurar Java
+    - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Construir usuarios-servicio
-      working-directory: usuarios-servicio
-      run: mvn clean install -DskipTests
+    - name: Grant execute permission for Maven wrapper
+      run: chmod +x mvnw
 
-    - name: Construir productos-servicio
-      working-directory: productos-servicio
-      run: mvn clean install -DskipTests
-
-    - name: Construir pedidos-servicio
-      working-directory: pedidos-servicio
-      run: mvn clean install -DskipTests
-
-    - name: Construir config-server
-      working-directory: config-server
-      run: mvn clean install -DskipTests
-
-    - name: Construir eureka-server
-      working-directory: eureka-server
-      run: mvn clean install -DskipTests
-
-    - name: Construir gateway-servicio
-      working-directory: gateway-servicio
-      run: mvn clean install -DskipTests
+    - name: Build with Maven
+      run: ./mvnw clean verify

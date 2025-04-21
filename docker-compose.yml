@@ -44,6 +44,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=default
       - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
 
   productos-servicio:
     build:
@@ -58,6 +59,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=default
       - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
 
   pedidos-servicio:
     build:
@@ -71,7 +73,56 @@ services:
       - config-server
     environment:
       - SPRING_PROFILES_ACTIVE=default
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+
+  gateway-servicio:
+    build:
+      context: ./gateway-servicio
+    container_name: gateway-servicio
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+
+  estampaider-web:
+    build:
+      context: ./estampaider-web
+    container_name: estampaider-web
+    ports:
+      - "8084:8084"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
       - spring.data.mongodb.uri=mongodb://mongo:27017/estampaider
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka/
+      
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - usuarios-servicio
+      - productos-servicio
+      - pedidos-servicio
+      - gateway-servicio
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
 
 volumes:
   mongo-data:
+
+  
+

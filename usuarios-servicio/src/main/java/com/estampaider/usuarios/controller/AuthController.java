@@ -43,12 +43,12 @@ public class AuthController {
         return usuarioRepository.findByCorreo(nuevoUsuario.getCorreo())
                 .flatMap(u -> Mono.just(ResponseEntity.badRequest().body("El correo ya está registrado")))
                 .switchIfEmpty(
-                    Mono.defer(() -> {
-                        String hashedPassword = passwordEncoder.encode(nuevoUsuario.getContrasena());
-                        nuevoUsuario.setContrasena(hashedPassword);
-                        return usuarioRepository.save(nuevoUsuario)
-                                .thenReturn(ResponseEntity.ok("Usuario registrado correctamente"));
-                    })
+                        Mono.defer(() -> {
+                            String hashedPassword = passwordEncoder.encode(nuevoUsuario.getContrasena());
+                            nuevoUsuario.setContrasena(hashedPassword);
+                            return usuarioRepository.save(nuevoUsuario)
+                                    .thenReturn(ResponseEntity.ok("Usuario registrado correctamente"));
+                        })
                 );
     }
 }

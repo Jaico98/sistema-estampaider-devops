@@ -81,3 +81,10 @@ El sistema está compuesto por los siguientes microservicios:
 
 - Postman usado para verificar endpoints y autenticación.
 
+## Pruebas con Postman
+- Este proyecto incluye una colección de Postman con todas las peticiones necesarias para probar el sistema.
+
+- Archivos incluidos
+- postman/estampaider-coleccion.postman_collection.json
+
+- postman/estampaider-env.postman_environment.json

@@ -33,4 +33,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Mono<Void> eliminarUsuario(String id) {
         return usuarioRepository.deleteById(id);
     }
+
+    @Override
+    public Mono<Usuario> registrar(Usuario usuario) {
+        return usuarioRepository.save(usuario); // ✅ Implementación
+    }
 }

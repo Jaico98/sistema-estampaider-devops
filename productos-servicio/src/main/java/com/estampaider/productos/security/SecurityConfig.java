@@ -8,21 +8,22 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtUtil jwtUtil;
+    private final JwtSecurityContextRepository jwtSecurityContextRepository;
 
-    public SecurityConfig(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
+    public SecurityConfig(JwtSecurityContextRepository jwtSecurityContextRepository) {
+        this.jwtSecurityContextRepository = jwtSecurityContextRepository;
     }
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
-                .csrf().disable()
-                .securityContextRepository(new JwtSecurityContextRepository(jwtUtil))
-                .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/public/**").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/actuator/**").permitAll()
                         .anyExchange().authenticated()
                 )
+                .securityContextRepository(jwtSecurityContextRepository)
                 .build();
     }
 }

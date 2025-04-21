@@ -1,17 +1,17 @@
 package com.estampaider.pedidos.security;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.Collections;
 
-@Component
+@Component 
 public class JwtSecurityContextRepository implements ServerSecurityContextRepository {
 
     private final JwtUtil jwtUtil;
@@ -22,7 +22,7 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
 
     @Override
     public Mono<Void> save(ServerWebExchange exchange, SecurityContext context) {
-        return Mono.empty(); // No persistimos el contexto
+        return Mono.empty();
     }
 
     @Override
@@ -37,6 +37,7 @@ public class JwtSecurityContextRepository implements ServerSecurityContextReposi
                 return Mono.just(new SecurityContextImpl(auth));
             }
         }
+
         return Mono.empty();
     }
 }
